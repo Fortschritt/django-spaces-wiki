@@ -1,0 +1,46 @@
+{% load i18n wiki_tags %}
+
+{% with selected_tab as selected %}
+
+<li class="pull-right">
+	<a href="{% url 'spaces_wiki:create' path=urlpath.path %}" class="btn-create">
+          <span class="icon icon-plus"></span>
+		  <span class="hidden-xs">{% trans "New sub-article" %}</span>
+        </a>
+</li>
+
+<li class="{% if selected == "view" %} active{% endif %}">
+  {% if urlpath.path %}
+  <a href="{% url 'spaces_wiki:get'  path=urlpath.path %}">
+  {% else %}
+  <a href="{% url 'spaces_wiki:get' article_id=article.id %}">
+  {% endif %}
+    <span class="icon icon-eye"></span>
+    <span class="hidden-xs">{% trans "View" %}</span>
+  </a>
+</li>
+{% endwith %}
+
+{% if article|can_write:user and not article.current_revision.locked %}
+<li class="{% if selected == "edit" %} active{% endif %} btn-edit">
+  {% if urlpath.path %}
+    <a href="{% url 'spaces_wiki:edit' path=urlpath.path %}">
+  {% else %}
+    <a href="{% url 'spaces_wiki:edit' article_id=article.id  %}">
+  {% endif %}
+    <span class="icon icon-edit"></span>
+    <span class="hidden-xs">{% trans "Edit" %}</span>
+  </a>
+</li>
+{% endif %}
+
+<li class="{% if selected == "history" %} active{% endif %}">
+  {% if urlpath.path %}
+    <a href="{% url 'spaces_wiki:history' path=urlpath.path %}">
+  {% else %}
+	<a href="{% url 'spaces_wiki:history' article_id=article.id %}">
+  {% endif %}
+    <span class="icon icon-clock"></span>
+    <span class="hidden-xs">{% trans "Changes" %}</span>
+  </a>
+</li>

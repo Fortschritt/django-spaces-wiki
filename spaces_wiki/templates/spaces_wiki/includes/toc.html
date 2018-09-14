@@ -1,0 +1,23 @@
+{% load i18n mptt_tags %}
+
+<div class="panel panel-default">
+<div class="panel-body">
+<h3>{% trans 'Table of Contents' %}</h3>
+<ul class="list-unstyled list-spaced overflow-ellipsis">
+{% recursetree full_tree %}
+	{% if not node.article.current_revision.deleted %}
+		<li>
+		    <a href="{% url 'spaces_wiki:get' path=node.path %}">
+			  {{ node.article.current_revision.title }}
+			</a>
+		    {% if not node.is_leaf_node %}
+		        <ul class="list-unstyled list-spaced m-l overflow-ellipsis">
+		            {{ children }}
+		        </ul>
+		    {% endif %}
+		</li>
+	{% endif %}
+{% endrecursetree %}
+</ul>
+</div>
+</div>

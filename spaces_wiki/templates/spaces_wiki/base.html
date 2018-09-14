@@ -1,0 +1,14 @@
+{% extends 'collab/plugin.html' %}
+
+{% block body_class %}{{ block.super }} wiki{% endblock %}
+
+{% block content %}
+{# Reserved for breadcrumbs #}
+{% block wiki_breadcrumbs %}{% endblock %}
+      
+{# Main page contents go here #}
+{% block wiki_contents %}{% endblock %}
+
+{% block wiki_footer_prepend %}
+{% endblock %}
+{% endblock content %}

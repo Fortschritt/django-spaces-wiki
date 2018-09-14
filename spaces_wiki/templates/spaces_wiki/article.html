@@ -1,0 +1,58 @@
+{% extends "spaces_wiki/base.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+{% block wiki_pagetitle %}{{ article.current_revision.title }}{% endblock %}
+{% block wiki_breadcrumbs %}
+<div class="col-md-12">
+{% include "spaces_wiki/includes/breadcrumbs.html" %}
+</div>
+{% endblock %}
+
+{% block wiki_contents %}
+<div class="col-md-9">
+  <div id="article-container" class="panel panel-default">
+  <div class="panel-body">
+
+	  {% block article_menu %}
+        <ul class="nav nav-tabs" id="article-menu">
+          {% include "spaces_wiki/includes/article_menu.html" %}
+        </ul>
+	  {% endblock article_menu %}
+
+        <h1 id="article-title">{% block wiki_contents_heading %}
+          {{ article.current_revision.title }}
+			{% endblock %}
+          <small style="font-size:14px;vertical-align:middle;">
+            {% if urlpath.parent %}
+            <a href="{% url 'spaces_wiki:get' path=urlpath.path %}" title="{% trans 'Direkt link to this article' %}"><span class="icon icon-link"></span></a>
+            {% endif %}
+            {% if article.current_revision.locked %}
+              <span class="icon icon-lock"></span> {% trans "locked" %}
+            {% endif %}
+          </small>
+        </h1>
+
+
+    <div>
+      {% block wiki_contents_tab %}
+      {% endblock %}
+	  {% block last_change %}
+	  <span class="pull-right text-muted m-t-md">
+	  {% trans "Last change:" %} {{ article.current_revision.modified }}
+	  </span>
+	  {% endblock %}
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="col-md-3">
+{% include 'spaces_wiki/includes/toc.html' %}
+</div>
+
+
+{% endblock %}
+
+
+{% block wiki_footer_prepend %}
+{% endblock %}

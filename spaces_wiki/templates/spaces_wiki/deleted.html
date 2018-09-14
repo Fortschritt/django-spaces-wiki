@@ -1,0 +1,57 @@
+{% extends "spaces_wiki/base.html" %}
+{% load spaces_wiki_tags wiki_tags i18n sekizai_tags %}
+
+
+{% block wiki_pagetitle %}{% trans "Article deleted" %}{% endblock %}
+
+{% block wiki_contents %}
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h1 class="page-header">{% trans "Article deleted" %}</h1>
+
+  
+  <p class="lead">
+  {% trans "The article you were looking for has been deleted." %}  
+  </p>
+  
+  
+  {% if not article.current_revision.locked or article|can_delete:user %}
+    <div class="panel panel-default" style="{% hidden_if_not_owner user article space %}">
+      <div class="panel panel-body">
+        <h2 >{% trans "Restore" %}</h2>
+        <p >{% trans "You may restore this article and its children by clicking restore." %}</p>
+          <a href="{% url 'spaces_wiki:root' %}" class="btn btn-default m-r-md">
+            <span class="icon icon-level-up"></span>
+            {% trans "Cancel" %}
+          </a>
+          <a href="?restore=1" class="btn btn-primary">
+            <span class="icon icon-ccw"></span>
+            {% trans "Restore" %}
+          </a>
+      </div>
+	</div>
+  {% endif %}
+
+{% comment %}  
+{# omitting purging so the user experience across other plugins is more similar (e.g. blog has undelete, too, but no purge). #}
+  {% if article|can_moderate:user %}
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h2>{% trans "Purge deletion" %}</h2>
+        <p>{% trans "You may remove this article and any children permanently and free their slugs by clicking the below button. This action cannot be undone." %}</p>
+        <form method="POST" class="form form-inline">
+          {% csrf_token %}
+          {% wiki_form purge_form %}
+            <button class="btn btn-default">
+              <span class="fa fa-remove"></span>
+              {% trans "Purge" %}
+            </button>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+{% endcomment %}
+  </div>
+ 
+{% endblock %}
+

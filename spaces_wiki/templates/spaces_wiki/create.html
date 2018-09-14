@@ -1,0 +1,51 @@
+{% extends "spaces_wiki/base.html" %}
+{% load wiki_tags i18n sekizai_tags staticfiles %}
+
+
+{% block wiki_pagetitle %}{% trans "Add new article" %}{% endblock %}
+
+{% block wiki_contents %}
+
+  {% addtoblock "js" %}
+  <script type="text/javascript" src="{% static "admin/js/urlify.js" %}"></script>
+  <script type="text/javascript">
+  {% if not create_form.slug.value %}
+  //<![CDATA[	
+  (function($) {
+	  $(document).ready(function (){
+		  $("#id_title").keyup(function () {
+			  var e = $("#id_slug")[0];
+			  if(!e._changed) {
+			    slug = window.URLify(this.value, 50);
+				  e.value = slug;
+			  }
+	      });
+	  });
+  })(jQuery);
+  //]]>
+  {% endif %}
+  </script>
+  {% endaddtoblock %}
+
+  {% include "spaces_wiki/includes/editormedia.html" %}
+  <h1 class="page-header">{% trans "Add new article" %}</h1>
+  
+  <form method="POST" class="" id="createForm">
+    {% wiki_form create_form %}
+	{% include "spaces_notifications/form.html" %}
+    <div class="form-group form-actions">
+      <div class="">
+        <a href="{% url 'spaces_wiki:get' path=parent_urlpath.path %}" class="btn btn-default m-r-md">
+          <span class="icon icon-level-up"></span>
+          {% trans "Go back" %}
+        </a>
+        <button type="submit" name="save_changes" class="btn btn-primary">
+          <span class="icon icon-plus"></span>
+          {% trans "Create article" %}
+        </button>
+      </div>  
+    </div>  
+  </form>
+
+{% endblock %}
+

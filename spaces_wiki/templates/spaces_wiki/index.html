@@ -1,0 +1,75 @@
+{% extends "spaces_wiki/article.html" %}
+{% load wiki_tags i18n humanize %}
+
+
+{% block wiki_pagetitle %}{% trans "Listing articles in" %} {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_heading %}
+  {% trans 'Notebook' %}
+{% endblock %}
+
+{% block wiki_contents_tab %}
+
+{% url 'spaces_wiki:dir' urlpath.path as self_url %}
+
+<form class="form-search directory-toolbar">
+<div class="well well-small">
+  <div class="btn-group pull-left">
+    <a href="{% url 'spaces_wiki:create' path=urlpath.path %}" class="btn btn-default">
+      <span class="icon icon-plus"></span>
+      {% trans "Add article" %}
+    </a>
+  </div>
+  <div class="pull-right">
+    {{ filter_form.query }}
+  </div>
+  {% if filter_query %}
+    <div class="pull-right filter-clear">
+      <a href="{{ self_url }}">({% trans "clear" %})</a>
+    </div>
+  {% endif %}
+
+  <div class="clearfix"></div>
+</div>
+</form>
+
+<table class="table table-striped">
+  <tr>
+    <th>{% trans "Title" %}</th>
+    <th>{% trans "Last Change" %}</th>
+  </tr>
+  {% for urlpath in directory %}
+	{% if not urlpath.article.current_revision.deleted %}
+    <tr>
+      <td>
+        <a href="{% url 'spaces_wiki:get' path=urlpath.path %}"> {{ urlpath.article.current_revision.title }} </a> 
+        <a href="{% url 'spaces_wiki:dir' path=urlpath.path %}" class="list-children"> › </a>
+		{% comment %}
+        {% if urlpath.article.current_revision.deleted %}
+          <span class="icon icon-trash"></span>
+        {% endif %}
+        {% if urlpath.article.current_revision.locked %}
+          <span class="icon icon-lock"></span>
+        {% endif %}
+		{% endcomment %}
+      </td>
+      <td>
+        {{ urlpath.article.modified }}
+      </td>
+    </tr>
+	{% endif %}
+    {% empty%}
+    <tr>
+      <td colspan="100">
+        <em>{% trans "There are no articles in this level" %}</em>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+
+{% include "wiki/includes/pagination.html" %}
+
+{% endblock %}
+
+{% block article_menu %}{% endblock %} 
+{% block wiki_footer_prepend %}{% endblock %}
