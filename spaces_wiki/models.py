@@ -15,8 +15,8 @@ class SpacesWiki(SpacePlugin):
     reverse_url = 'spaces_wiki:root'
 
 class WikiArticle(SpaceModel):
-    article = models.OneToOneField(Article)
-    wiki = models.ForeignKey(SpacesWiki)
+    article = models.OneToOneField(Article, on_delete=models.CASCADE)
+    wiki = models.ForeignKey(SpacesWiki, on_delete=models.CASCADE)
 
     spaceplugin_field_name = "wiki"
 

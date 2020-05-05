@@ -39,7 +39,7 @@ class SpaceWikiURLPatterns(WikiURLPatterns):
 #            url('^_search/$',
 #                get_class_from_str(self.search_view_class).as_view(),
 #                name='search'),
-            url('^_revision/diff/(?P<revision_id>\d+)/$',
+            url('^_revision/diff/(?P<revision_id>[0-9]+)/$',
                 self.article_diff_view,
                 name='diff'),
         ]
@@ -67,12 +67,12 @@ wiki_url_patterns = space_patterns(
 )
 
 
-
+app_name="spaces_wiki"
 urlpatterns = (
     # regular views in spaces_wiki namespace
-    url(r'', include(spaces_wiki_url_patterns, 'spaces_wiki')),
+    url(r'', include((spaces_wiki_url_patterns, 'spaces_wiki'))),
     # some additional views for hardcoded 'wiki' namespace
-    url(r'', include(wiki_url_patterns, 'wiki')),
+    url(r'', include((wiki_url_patterns, 'wiki'))),
 )
 
 
