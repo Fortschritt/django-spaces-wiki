@@ -1,9 +1,4 @@
 
-# /
-/__pycache__
+__pycache__
 
-# /migrations/
-/migrations/__pycache__
-
-# /templatetags/
-/templatetags/__pycache__
+django_spaces_wiki.egg-info
