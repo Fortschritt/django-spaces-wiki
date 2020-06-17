@@ -16,7 +16,7 @@ def article_owner_or_admin_required(func):
         else:
             slug = None
         obj = get_object_or_404(URLPath, slug=slug)
-        if self.user and self.user.is_authenticated():
+        if self.user and self.user.is_authenticated:
             is_allowed = is_owner_or_admin(
                 self.user,
                 obj.article.owner,
@@ -40,7 +40,7 @@ def article_owner_or_admin_required_for_restore(func):
         else:
             slug = None
         obj = get_object_or_404(URLPath, slug=slug)
-        if self.user and self.user.is_authenticated():
+        if self.user and self.user.is_authenticated:
             is_allowed = is_owner_or_admin(
                 self.user,
                 obj.article.owner,

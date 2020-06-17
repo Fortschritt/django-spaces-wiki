@@ -1,17 +1,19 @@
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
+
 from actstream.signals import action as actstream_action
-from collab.decorators import permission_required_or_403, space_admin_required
 from guardian.mixins import PermissionRequiredMixin
 from wiki.conf import settings
 from wiki.decorators import get_article
 from wiki.forms import EditForm, DeleteForm
 from wiki.models import URLPath
 import wiki.views.article as wiki_article
+
+from collab.decorators import permission_required_or_403, space_admin_required
 from spaces.models import SpacePluginRegistry
 from spaces_notifications.mixins import NotificationMixin
 from .forms import SpaceCreateForm, SpaceDeleteForm
@@ -78,6 +80,10 @@ class SpaceDir(WikiContextMixin, wiki_article.Dir, SpaceArticleMixin):
         children = super(SpaceDir, self).get_queryset()
         children = children.filter(article__wikiarticle__wiki__space=self.request.SPACE)
         return children
+
+
+class SpaceDiffView(WikiContextMixin, wiki_article.DiffView, SpaceArticleMixin):
+    pass
 
 class SpaceIndex(SpaceDir):
     template_name="spaces_wiki/index.html"
